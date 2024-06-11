@@ -1,5 +1,6 @@
 import datetime
 from pydantic import BaseModel
+from typing import Optional
 
 
 class UserGet(BaseModel):
@@ -11,6 +12,7 @@ class UserGet(BaseModel):
     exp_group: int
     os: str
     source: str
+
 
     class Config:
         orm_mode = True
@@ -31,6 +33,6 @@ class FeedGet(BaseModel):
     action: str
     time: datetime.datetime
 
+
     class Config:
         orm_mode = True
-        

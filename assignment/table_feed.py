@@ -9,3 +9,4 @@ class Feed(Base):
     post_id = Column(Integer, ForeignKey("post.id"), primary_key=True, name="post_id")
     action = Column(String)
     time = Column(TIMESTAMP)
+
