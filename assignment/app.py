@@ -5,7 +5,9 @@ from table_post import Post
 from table_user import User
 from table_feed import Feed
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
+from sqlalchemy import func
+
 
 app = FastAPI()
 
@@ -56,3 +58,14 @@ def get_post_feed(id: int, limit: int = 10, db: Session = Depends(get_db)):
         return []
         raise HTTPException(200, detail="list is empty")
     return post_feed
+
+@app.get("/post/recommendations/", response_model=List[PostGet])
+def get_recommendations(id: Optional[int] = None, limit: int = 10, db: Session = Depends(get_db)):
+    query = db.query(Post.id, Post.text, Post.topic)\
+             .join(Feed, Feed.post_id == Post.id)\
+             .filter(Feed.action == 'like')\
+             .group_by(Post.id, Post.text, Post.topic)\
+             .order_by(func.count(Post.id).desc())\
+             .limit(limit)\
+             .all()
+    return query
