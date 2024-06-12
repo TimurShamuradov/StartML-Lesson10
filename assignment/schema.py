@@ -32,6 +32,8 @@ class FeedGet(BaseModel):
     post_id: int
     action: str
     time: datetime.datetime
+    user: Optional[UserGet]
+    post: Optional[PostGet]
 
 
     class Config:
